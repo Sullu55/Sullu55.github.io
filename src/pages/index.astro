@@ -11,6 +11,27 @@ const skills = [
   { pct: 75, label: 'React / Next.js / Astro' },
   { pct: 65, label: 'Backend (Supabase / Python)' },
 ];
+
+// Stack con logos brand-coloreados (simpleicons.org CDN)
+// Para iconos cuya marca es negra (Next.js, Vercel, Express, GitHub Actions) usamos blanco/claro
+const stack = [
+  { name: 'JavaScript',     slug: 'javascript',    color: 'F7DF1E' },
+  { name: 'TypeScript',     slug: 'typescript',    color: '3178C6' },
+  { name: 'React',          slug: 'react',         color: '61DAFB' },
+  { name: 'Next.js',        slug: 'nextdotjs',     color: 'FFFFFF' },
+  { name: 'Astro',          slug: 'astro',         color: 'BC52EE' },
+  { name: 'Vite',           slug: 'vite',          color: '646CFF' },
+  { name: 'Tailwind CSS',   slug: 'tailwindcss',   color: '06B6D4' },
+  { name: 'Node.js',        slug: 'nodedotjs',     color: '5FA04E' },
+  { name: 'Supabase',       slug: 'supabase',      color: '3FCF8E' },
+  { name: 'PostgreSQL',     slug: 'postgresql',    color: '4169E1' },
+  { name: 'Python',         slug: 'python',        color: '3776AB' },
+  { name: 'HTML5',          slug: 'html5',         color: 'E34F26' },
+  { name: 'CSS3',           slug: 'css',           color: '663399' },
+  { name: 'Git',            slug: 'git',           color: 'F05032' },
+  { name: 'GitHub Actions', slug: 'githubactions', color: '2088FF' },
+  { name: 'Vercel',         slug: 'vercel',        color: 'FFFFFF' },
+];
 ---
 <Layout title="Anyelo Sulluchuco — Portfolio · Ingeniería de Sistemas UNCP">
   {/* ───────────────── HERO ───────────────── */}
@@ -46,7 +67,7 @@ const skills = [
           <a href="https://github.com/Sullu55" target="_blank" rel="noopener" aria-label="GitHub" class="grid h-10 w-10 place-items-center rounded-full border border-slate-700 bg-slate-900/60 text-slate-300 transition hover:border-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-300">
             <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.1-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.2.9 2.3v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
           </a>
-          <a href="https://github.com/Sullit0" target="_blank" rel="noopener" aria-label="GitHub Sullit0" class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white shadow-lg shadow-indigo-500/40 transition hover:scale-105">
+          <a href="https://www.linkedin.com/in/anyelo-sulluchuco/" target="_blank" rel="noopener" aria-label="LinkedIn" class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white shadow-lg shadow-indigo-500/40 transition hover:scale-105">
             <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.6 3H4.4A1.4 1.4 0 0 0 3 4.4v15.2A1.4 1.4 0 0 0 4.4 21h15.2A1.4 1.4 0 0 0 21 19.6V4.4A1.4 1.4 0 0 0 19.6 3zM8.3 18.3H5.7V9.7h2.6zM7 8.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm11.3 9.8H15.7v-4.2c0-1 0-2.3-1.4-2.3s-1.6 1.1-1.6 2.2v4.2H10v-8.6h2.5v1.2h.1a2.8 2.8 0 0 1 2.5-1.4c2.7 0 3.2 1.8 3.2 4.1z"/></svg>
           </a>
           <a href="mailto:zacsullu@gmail.com" aria-label="Email" class="grid h-10 w-10 place-items-center rounded-full border border-slate-700 bg-slate-900/60 text-slate-300 transition hover:border-indigo-400 hover:text-indigo-300">
@@ -250,13 +271,28 @@ const skills = [
     <div class="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900/80 to-slate-900/30 p-8 md:p-12">
       <span class="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-400">My toolkit</span>
       <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Stack que manejo</h2>
-      <div class="mt-8 flex flex-wrap gap-2">
-        {[
-          'JavaScript', 'TypeScript', 'React', 'Next.js', 'Astro', 'Vite',
-          'Tailwind CSS', 'Node.js', 'Supabase', 'PostgreSQL', 'Python',
-          'HTML5', 'CSS3', 'Git', 'GitHub Actions', 'Vercel'
-        ].map((t) => (
-          <span class="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-200">{t}</span>
+      <p class="mt-3 max-w-2xl text-slate-400">
+        Tecnologías que uso día a día en proyectos académicos y personales.
+      </p>
+
+      <div class="mt-10 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
+        {stack.map((tech) => (
+          <div
+            class="group relative flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-950/40 p-3 transition hover:-translate-y-1 hover:border-indigo-400 hover:bg-slate-900/80 hover:shadow-lg hover:shadow-indigo-500/20"
+            title={tech.name}
+          >
+            <img
+              src={`https://cdn.simpleicons.org/${tech.slug}/${tech.color}`}
+              alt={tech.name}
+              width="40"
+              height="40"
+              loading="lazy"
+              class="h-9 w-9 transition group-hover:scale-110 md:h-10 md:w-10"
+            />
+            <span class="text-[10px] font-medium text-slate-400 transition group-hover:text-slate-200 md:text-xs">
+              {tech.name}
+            </span>
+          </div>
         ))}
       </div>
     </div>
