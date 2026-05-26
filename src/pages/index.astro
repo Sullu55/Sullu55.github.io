@@ -65,46 +65,63 @@ const skills = [
         </div>
       </div>
 
-      {/* DERECHA — composición con inicial gigante + rayos */}
-      <div class="relative h-[420px] sm:h-[480px] md:h-[560px]">
-        {/* "A" gigante de fondo */}
+      {/* DERECHA — composición con foto + rayos + inicial detrás */}
+      <div class="relative h-[460px] sm:h-[520px] md:h-[600px]">
+        {/* Letra "A" muy sutil detrás */}
         <div class="pointer-events-none absolute inset-0 grid place-items-center">
-          <span class="select-none bg-gradient-to-br from-slate-700/60 to-slate-900/0 bg-clip-text text-[22rem] font-black leading-none text-transparent sm:text-[26rem] md:text-[30rem]">
+          <span class="select-none bg-gradient-to-br from-slate-700/30 to-slate-900/0 bg-clip-text text-[22rem] font-black leading-none text-transparent sm:text-[26rem] md:text-[30rem]">
             A
           </span>
         </div>
 
-        {/* Rayos / sunburst */}
-        <div class="absolute right-2 top-1/2 -translate-y-1/2">
-          <div class="relative h-72 w-72 sm:h-80 sm:w-80">
-            <div class="absolute inset-0 rounded-full bg-fuchsia-500/20 blur-3xl"></div>
+        {/* Sunburst — detrás de la foto */}
+        <div class="absolute inset-0 grid place-items-center">
+          <div class="relative h-[26rem] w-[26rem] sm:h-[30rem] sm:w-[30rem]">
+            <div class="absolute inset-0 rounded-full bg-fuchsia-500/15 blur-3xl"></div>
             <svg viewBox="0 0 200 200" class="relative h-full w-full">
-              {Array.from({ length: 36 }).map((_, i) => (
+              {Array.from({ length: 48 }).map((_, i) => (
                 <line
                   x1="100"
                   y1="100"
                   x2="100"
-                  y2={i % 2 === 0 ? '8' : '24'}
-                  stroke="url(#g1)"
-                  stroke-width="2"
-                  transform={`rotate(${i * 10} 100 100)`}
-                  opacity={i % 2 === 0 ? '0.85' : '0.5'}
+                  y2={i % 2 === 0 ? '0' : '12'}
+                  stroke="url(#hero-rays)"
+                  stroke-width="1.2"
+                  transform={`rotate(${i * 7.5} 100 100)`}
+                  opacity={i % 2 === 0 ? '0.7' : '0.35'}
                 />
               ))}
               <defs>
-                <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#a855f7"/>
+                <linearGradient id="hero-rays" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#d946ef"/>
                   <stop offset="100%" stop-color="#6366f1"/>
                 </linearGradient>
               </defs>
-              <circle cx="100" cy="100" r="32" fill="#0f172a" stroke="#a855f7" stroke-width="3"/>
-              <circle cx="100" cy="100" r="18" fill="#a855f7"/>
             </svg>
           </div>
         </div>
 
+        {/* Foto circular */}
+        <div class="absolute inset-0 grid place-items-center">
+          <div class="relative h-72 w-72 sm:h-80 sm:w-80 md:h-[22rem] md:w-[22rem]">
+            {/* anillo gradiente */}
+            <div class="absolute -inset-1 rounded-full bg-gradient-to-tr from-indigo-500 via-fuchsia-500 to-pink-500 opacity-90 blur-sm"></div>
+            <div class="absolute -inset-2 rounded-full bg-gradient-to-tr from-indigo-500/30 via-fuchsia-500/30 to-pink-500/30 blur-2xl"></div>
+            <div class="relative h-full w-full overflow-hidden rounded-full border-4 border-slate-900 shadow-2xl shadow-indigo-500/40">
+              <img
+                src="/anyelo.jpg"
+                alt="Anyelo Sulluchuco"
+                width="440"
+                height="440"
+                loading="eager"
+                class="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Badge "Disponible" flotante */}
-        <div class="absolute bottom-4 left-2 rounded-2xl border border-indigo-500/30 bg-slate-900/80 px-4 py-3 shadow-xl backdrop-blur md:bottom-6">
+        <div class="absolute bottom-2 left-0 rounded-2xl border border-indigo-500/30 bg-slate-900/85 px-4 py-3 shadow-xl backdrop-blur md:bottom-4">
           <div class="flex items-center gap-3">
             <span class="relative flex h-3 w-3">
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
@@ -113,6 +130,19 @@ const skills = [
             <div>
               <p class="text-xs font-medium text-slate-400">Estado</p>
               <p class="text-sm font-semibold text-slate-100">Disponible para proyectos</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Badge tech flotante */}
+        <div class="absolute right-0 top-2 rounded-2xl border border-fuchsia-500/30 bg-slate-900/85 px-4 py-3 shadow-xl backdrop-blur">
+          <div class="flex items-center gap-3">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-sm font-black text-white">
+              {`</>`}
+            </span>
+            <div>
+              <p class="text-xs font-medium text-slate-400">Stack</p>
+              <p class="text-sm font-semibold text-slate-100">React · Next · Astro</p>
             </div>
           </div>
         </div>

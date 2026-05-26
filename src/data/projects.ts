@@ -40,7 +40,7 @@ export const projects: Project[] = [
       'Scripts Python para ingesta de catálogo',
     ],
     repo: 'https://github.com/Sullu55/insfor-makichay-bot',
-    demo: 'https://makichay.vercel.app',
+    demo: 'https://559nwjc2-6dt.insforge.site',
     highlight: true,
   },
   {
