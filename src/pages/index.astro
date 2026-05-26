@@ -4,59 +4,205 @@ import ProjectCard from '../components/ProjectCard.astro';
 import { projects } from '../data/projects';
 
 const featured = projects.filter((p) => p.highlight);
+
+const skills = [
+  { pct: 90, label: 'HTML / CSS / Tailwind' },
+  { pct: 80, label: 'JavaScript / TypeScript' },
+  { pct: 75, label: 'React / Next.js / Astro' },
+  { pct: 65, label: 'Backend (Supabase / Python)' },
+];
 ---
 <Layout title="Anyelo Sulluchuco — Portfolio · Ingeniería de Sistemas UNCP">
-  <section class="mx-auto max-w-6xl px-6 pt-16 pb-12 md:pt-24 md:pb-20">
-    <div class="max-w-3xl">
-      <p class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300">
-        <span class="relative flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-indigo-500"></span>
-        </span>
-        Disponible para prácticas y proyectos
-      </p>
-      <h1 class="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-        Hola, soy <span class="bg-gradient-to-r from-indigo-400 to-fuchsia-400 bg-clip-text text-transparent">Anyelo Sulluchuco</span>
-      </h1>
-      <p class="mt-6 text-lg leading-relaxed text-slate-300 md:text-xl">
-        Estudiante de <strong class="text-slate-100">Ingeniería de Sistemas</strong> en la Universidad Nacional del Centro del Perú.
-        Construyo aplicaciones web modernas con <strong class="text-slate-100">React, Next.js, TypeScript</strong> y backends sobre Supabase.
-      </p>
-      <div class="mt-8 flex flex-wrap items-center gap-3">
-        <a href="/proyectos" class="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:bg-indigo-400">
-          Ver mis proyectos
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-        </a>
-        <a href="/curso" class="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/50 px-5 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-slate-500">
-          Curso UNCP — Semanas 1-8
-        </a>
-        <a href="mailto:zacsullu@gmail.com" class="inline-flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-slate-400 transition hover:text-slate-100">
+  {/* ───────────────── HERO ───────────────── */}
+  <section class="relative overflow-hidden">
+    <div class="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-12 pb-20 md:grid-cols-2 md:pt-20 md:pb-28">
+
+      {/* IZQUIERDA — texto */}
+      <div class="relative z-10">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-indigo-400">
+          Hello I'm
+        </p>
+        <h1 class="mt-4 text-5xl font-black leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl">
+          Anyelo
+          <br />
+          <span class="bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
+            Sulluchuco
+          </span>
+        </h1>
+        <p class="mt-3 text-lg text-slate-400">
+          Web Developer &amp; Ing. de Sistemas
+        </p>
+
+        <a href="mailto:zacsullu@gmail.com" class="mt-8 inline-block text-lg font-medium text-indigo-300 underline decoration-indigo-500/40 underline-offset-4 transition hover:text-indigo-200 hover:decoration-indigo-400">
           zacsullu@gmail.com
         </a>
+        <p class="mt-3 text-sm text-slate-400">
+          Huancayo, Junín — Perú<br />
+          Universidad Nacional del Centro del Perú
+        </p>
+
+        {/* Social icons */}
+        <div class="mt-7 flex items-center gap-3">
+          <a href="https://github.com/Sullu55" target="_blank" rel="noopener" aria-label="GitHub" class="grid h-10 w-10 place-items-center rounded-full border border-slate-700 bg-slate-900/60 text-slate-300 transition hover:border-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-300">
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.1-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.2.9 2.3v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+          </a>
+          <a href="https://github.com/Sullit0" target="_blank" rel="noopener" aria-label="GitHub Sullit0" class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white shadow-lg shadow-indigo-500/40 transition hover:scale-105">
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.6 3H4.4A1.4 1.4 0 0 0 3 4.4v15.2A1.4 1.4 0 0 0 4.4 21h15.2A1.4 1.4 0 0 0 21 19.6V4.4A1.4 1.4 0 0 0 19.6 3zM8.3 18.3H5.7V9.7h2.6zM7 8.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm11.3 9.8H15.7v-4.2c0-1 0-2.3-1.4-2.3s-1.6 1.1-1.6 2.2v4.2H10v-8.6h2.5v1.2h.1a2.8 2.8 0 0 1 2.5-1.4c2.7 0 3.2 1.8 3.2 4.1z"/></svg>
+          </a>
+          <a href="mailto:zacsullu@gmail.com" aria-label="Email" class="grid h-10 w-10 place-items-center rounded-full border border-slate-700 bg-slate-900/60 text-slate-300 transition hover:border-indigo-400 hover:text-indigo-300">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/></svg>
+          </a>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/proyectos" class="inline-flex items-center gap-2 rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:bg-indigo-400">
+            Ver mis proyectos
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4-4 4M3 12h18"/></svg>
+          </a>
+          <a href="/curso" class="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/40 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-500">
+            Curso UNCP — Semanas 1-8
+          </a>
+        </div>
+      </div>
+
+      {/* DERECHA — composición con inicial gigante + rayos */}
+      <div class="relative h-[420px] sm:h-[480px] md:h-[560px]">
+        {/* "A" gigante de fondo */}
+        <div class="pointer-events-none absolute inset-0 grid place-items-center">
+          <span class="select-none bg-gradient-to-br from-slate-700/60 to-slate-900/0 bg-clip-text text-[22rem] font-black leading-none text-transparent sm:text-[26rem] md:text-[30rem]">
+            A
+          </span>
+        </div>
+
+        {/* Rayos / sunburst */}
+        <div class="absolute right-2 top-1/2 -translate-y-1/2">
+          <div class="relative h-72 w-72 sm:h-80 sm:w-80">
+            <div class="absolute inset-0 rounded-full bg-fuchsia-500/20 blur-3xl"></div>
+            <svg viewBox="0 0 200 200" class="relative h-full w-full">
+              {Array.from({ length: 36 }).map((_, i) => (
+                <line
+                  x1="100"
+                  y1="100"
+                  x2="100"
+                  y2={i % 2 === 0 ? '8' : '24'}
+                  stroke="url(#g1)"
+                  stroke-width="2"
+                  transform={`rotate(${i * 10} 100 100)`}
+                  opacity={i % 2 === 0 ? '0.85' : '0.5'}
+                />
+              ))}
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#a855f7"/>
+                  <stop offset="100%" stop-color="#6366f1"/>
+                </linearGradient>
+              </defs>
+              <circle cx="100" cy="100" r="32" fill="#0f172a" stroke="#a855f7" stroke-width="3"/>
+              <circle cx="100" cy="100" r="18" fill="#a855f7"/>
+            </svg>
+          </div>
+        </div>
+
+        {/* Badge "Disponible" flotante */}
+        <div class="absolute bottom-4 left-2 rounded-2xl border border-indigo-500/30 bg-slate-900/80 px-4 py-3 shadow-xl backdrop-blur md:bottom-6">
+          <div class="flex items-center gap-3">
+            <span class="relative flex h-3 w-3">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
+            </span>
+            <div>
+              <p class="text-xs font-medium text-slate-400">Estado</p>
+              <p class="text-sm font-semibold text-slate-100">Disponible para proyectos</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ───────────────── ABOUT MY RESUME ───────────────── */}
+  <section class="mx-auto max-w-6xl px-6 py-16 md:py-20">
+    <div class="text-center">
+      <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-indigo-400">
+        <span class="h-px w-8 bg-indigo-500/50"></span>
+        Who I am
+        <span class="h-px w-8 bg-indigo-500/50"></span>
+      </span>
+      <h2 class="mt-4 text-3xl font-bold text-white md:text-5xl">About My Resume</h2>
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2">
+      {/* Tabla de info */}
+      <div class="space-y-2.5">
+        {[
+          { k: 'Nombre', v: 'Anyelo Sulluchuco' },
+          { k: 'Ciclo', v: 'IX — 2026-I' },
+          { k: 'Universidad', v: 'UNCP — Ing. de Sistemas' },
+          { k: 'Residencia', v: 'Huancayo, Junín — Perú' },
+          { k: 'Email', v: 'zacsullu@gmail.com' },
+          { k: 'GitHub', v: '@Sullu55 / @Sullit0' },
+          { k: 'Freelance', v: 'Disponible' },
+        ].map((row) => (
+          <div class="grid grid-cols-[120px_1fr] items-center gap-4 rounded-xl border border-slate-800 bg-slate-900/40 px-5 py-3.5 transition hover:border-indigo-500/40">
+            <dt class="text-xs font-semibold uppercase tracking-wider text-indigo-400">{row.k}</dt>
+            <dd class="text-sm text-slate-200">{row.v}</dd>
+          </div>
+        ))}
+      </div>
+
+      {/* Bio + foto */}
+      <div class="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900/80 to-indigo-950/40 p-8 md:p-10">
+        <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-fuchsia-500/20 blur-3xl"></div>
+        <div class="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl"></div>
+        <h3 class="relative text-2xl font-bold text-white">Sobre mí</h3>
+        <p class="relative mt-4 leading-relaxed text-slate-300">
+          Estudiante de <strong class="text-slate-100">Ingeniería de Sistemas</strong> en la UNCP,
+          ciclo IX. Me especializo en desarrollo web frontend con React, Next.js y Astro,
+          y backends con Supabase + integraciones de IA (Groq, OpenRouter).
+        </p>
+        <p class="relative mt-4 leading-relaxed text-slate-300">
+          He construido un CRM con autenticación SSR, un bot de WhatsApp con IA para una empresa
+          textil y dashboards en tiempo real consumiendo APIs externas. Disfruto convertir
+          requerimientos en software que se siente bien usar.
+        </p>
+        <div class="relative mt-6 grid grid-cols-3 gap-3 text-center">
+          <div class="rounded-lg border border-slate-800 bg-slate-950/40 p-3">
+            <p class="text-2xl font-bold text-white">5+</p>
+            <p class="text-xs text-slate-400">Proyectos</p>
+          </div>
+          <div class="rounded-lg border border-slate-800 bg-slate-950/40 p-3">
+            <p class="text-2xl font-bold text-white">2+</p>
+            <p class="text-xs text-slate-400">Años en código</p>
+          </div>
+          <div class="rounded-lg border border-slate-800 bg-slate-950/40 p-3">
+            <p class="text-2xl font-bold text-white">16+</p>
+            <p class="text-xs text-slate-400">Stack</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <dl class="mt-16 grid grid-cols-2 gap-4 sm:max-w-2xl sm:grid-cols-4">
-      {[
-        { k: '5+', v: 'Proyectos publicados' },
-        { k: '8', v: 'Semanas de curso' },
-        { k: 'IX', v: 'Ciclo (2026-I)' },
-        { k: 'UNCP', v: 'Universidad' },
-      ].map((s) => (
-        <div class="rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-3">
-          <dt class="text-2xl font-bold text-white">{s.k}</dt>
-          <dd class="text-xs text-slate-400">{s.v}</dd>
+    {/* Skills % cards estilo Orix */}
+    <div class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+      {skills.map((s) => (
+        <div class="relative overflow-hidden rounded-2xl border-2 border-indigo-500/40 bg-slate-900/40 p-6 transition hover:border-indigo-400 hover:bg-slate-900/70">
+          <div
+            class="pointer-events-none absolute bottom-0 left-0 h-1 bg-gradient-to-r from-indigo-500 to-fuchsia-500"
+            style={`width: ${s.pct}%`}
+          ></div>
+          <p class="text-4xl font-black text-white md:text-5xl">{s.pct}%</p>
+          <p class="mt-2 text-sm font-medium text-slate-400">{s.label}</p>
         </div>
       ))}
-    </dl>
+    </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-6 py-12">
+  {/* ───────────────── PROYECTOS DESTACADOS ───────────────── */}
+  <section class="mx-auto max-w-6xl px-6 py-16">
     <div class="flex items-end justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-white md:text-3xl">Proyectos destacados</h2>
+        <span class="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-400">Portfolio</span>
+        <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Proyectos destacados</h2>
         <p class="mt-2 text-slate-400">Una selección de lo que estoy construyendo.</p>
       </div>
       <a href="/proyectos" class="hidden text-sm font-medium text-indigo-400 hover:text-indigo-300 sm:inline">
@@ -69,21 +215,18 @@ const featured = projects.filter((p) => p.highlight);
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-6 py-12">
+  {/* ───────────────── STACK ───────────────── */}
+  <section class="mx-auto max-w-6xl px-6 py-16">
     <div class="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900/80 to-slate-900/30 p-8 md:p-12">
-      <h2 class="text-2xl font-bold text-white md:text-3xl">Stack que manejo</h2>
-      <p class="mt-3 max-w-2xl text-slate-400">
-        Tecnologías que uso día a día en proyectos académicos y personales.
-      </p>
+      <span class="text-xs font-semibold uppercase tracking-[0.3em] text-indigo-400">My toolkit</span>
+      <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">Stack que manejo</h2>
       <div class="mt-8 flex flex-wrap gap-2">
         {[
           'JavaScript', 'TypeScript', 'React', 'Next.js', 'Astro', 'Vite',
           'Tailwind CSS', 'Node.js', 'Supabase', 'PostgreSQL', 'Python',
           'HTML5', 'CSS3', 'Git', 'GitHub Actions', 'Vercel'
         ].map((t) => (
-          <span class="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-200">
-            {t}
-          </span>
+          <span class="rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-200">{t}</span>
         ))}
       </div>
     </div>

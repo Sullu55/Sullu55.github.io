@@ -24,6 +24,7 @@ export const projects: Project[] = [
       'Tema dinámico (next-themes)',
     ],
     repo: 'https://github.com/Sullit0/killa-crm',
+    demo: 'https://killa-crm.vercel.app',
     highlight: true,
   },
   {
@@ -39,6 +40,7 @@ export const projects: Project[] = [
       'Scripts Python para ingesta de catálogo',
     ],
     repo: 'https://github.com/Sullu55/insfor-makichay-bot',
+    demo: 'https://makichay.vercel.app',
     highlight: true,
   },
   {
