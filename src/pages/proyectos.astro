@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects } from '../data/projects';
+---
+<Layout title="Proyectos — Anyelo Sulluchuco">
+  <section class="mx-auto max-w-6xl px-6 pt-16 pb-12">
+    <p class="text-xs font-medium uppercase tracking-wider text-indigo-400">Portafolio</p>
+    <h1 class="mt-3 text-4xl font-bold tracking-tight text-white md:text-5xl">
+      Proyectos
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg text-slate-400">
+      Aplicaciones que he construido durante el curso de Desarrollo de Aplicaciones Web
+      y proyectos personales. Código abierto, listo para inspeccionar.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-20">
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map((p) => <ProjectCard project={p} />)}
+    </div>
+  </section>
+</Layout>

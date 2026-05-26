@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+import WeekCard from '../components/WeekCard.astro';
+import { weeks } from '../data/weeks';
+---
+<Layout title="Curso UNCP — Desarrollo de Aplicaciones Web · Semanas 1-8">
+  <section class="mx-auto max-w-6xl px-6 pt-16 pb-12">
+    <p class="text-xs font-medium uppercase tracking-wider text-indigo-400">
+      IS093A · Ciclo IX · 2026-I
+    </p>
+    <h1 class="mt-3 text-4xl font-bold tracking-tight text-white md:text-5xl">
+      Desarrollo de Aplicaciones Web
+    </h1>
+    <p class="mt-4 max-w-3xl text-lg text-slate-400">
+      Resumen de la <strong class="text-slate-200">Unidad I — Desarrollo Frontend</strong> del curso
+      en la Universidad Nacional del Centro del Perú. Para cada semana incluyo los contenidos
+      del sílabo, una explicación práctica y un fragmento de código representativo.
+    </p>
+
+    <div class="mt-8 rounded-xl border border-slate-800 bg-slate-900/40 p-5">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">
+        Información del curso
+      </h2>
+      <dl class="mt-3 grid gap-3 text-sm sm:grid-cols-2">
+        <div class="flex justify-between gap-3 border-b border-slate-800 pb-2 sm:border-0 sm:pb-0">
+          <dt class="text-slate-500">Docente</dt>
+          <dd class="text-slate-200">Dr. Jaime Suasnabar Terrel</dd>
+        </div>
+        <div class="flex justify-between gap-3 border-b border-slate-800 pb-2 sm:border-0 sm:pb-0">
+          <dt class="text-slate-500">Jefe de práctica</dt>
+          <dd class="text-slate-200">Mg. Miguel Aguilar Coronación</dd>
+        </div>
+        <div class="flex justify-between gap-3 border-b border-slate-800 pb-2 sm:border-0 sm:pb-0">
+          <dt class="text-slate-500">Naturaleza</dt>
+          <dd class="text-slate-200">Teórico–Práctico (4 créditos)</dd>
+        </div>
+        <div class="flex justify-between gap-3 border-b border-slate-800 pb-2 sm:border-0 sm:pb-0">
+          <dt class="text-slate-500">Horas semanales</dt>
+          <dd class="text-slate-200">6 (2T + 4P)</dd>
+        </div>
+        <div class="flex justify-between gap-3 border-b border-slate-800 pb-2 sm:border-0 sm:pb-0">
+          <dt class="text-slate-500">Periodo</dt>
+          <dd class="text-slate-200">06 abr — 31 jul 2026</dd>
+        </div>
+        <div class="flex justify-between gap-3">
+          <dt class="text-slate-500">Modalidad</dt>
+          <dd class="text-slate-200">Presencial</dd>
+        </div>
+      </dl>
+    </div>
+
+    <nav class="mt-8 flex flex-wrap gap-2">
+      {weeks.map((w) => (
+        <a
+          href={`#semana-${w.n}`}
+          class="rounded-lg border border-slate-800 bg-slate-900/40 px-3 py-1.5 text-sm text-slate-300 transition hover:border-indigo-500/40 hover:text-indigo-300"
+        >
+          Semana {w.n}
+        </a>
+      ))}
+    </nav>
+  </section>
+
+  <section class="mx-auto max-w-6xl space-y-8 px-6 pb-20">
+    {weeks.map((w) => <WeekCard week={w} />)}
+  </section>
+</Layout>

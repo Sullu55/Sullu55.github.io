@@ -1,0 +1,42 @@
+---
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+  { href: '/', label: 'Inicio' },
+  { href: '/proyectos', label: 'Proyectos' },
+  { href: '/curso', label: 'Curso UNCP' },
+];
+const isActive = (href: string) => pathname === href.replace(/\/$/, '');
+---
+<header class="sticky top-0 z-30 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur-md">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="group flex items-center gap-2 font-semibold tracking-tight">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-sm font-black text-white shadow-lg shadow-indigo-500/30">
+        AS
+      </span>
+      <span class="hidden sm:inline">Anyelo Sulluchuco</span>
+    </a>
+    <nav class="flex items-center gap-1 sm:gap-2 text-sm">
+      {links.map((l) => (
+        <a
+          href={l.href}
+          class:list={[
+            'rounded-md px-3 py-1.5 transition',
+            isActive(l.href)
+              ? 'bg-indigo-500/10 text-indigo-300 ring-1 ring-indigo-500/30'
+              : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100',
+          ]}
+        >
+          {l.label}
+        </a>
+      ))}
+      <a
+        href="https://github.com/Sullu55"
+        target="_blank"
+        rel="noopener"
+        class="ml-1 hidden rounded-md border border-slate-700 px-3 py-1.5 text-slate-300 transition hover:border-slate-500 hover:text-white sm:inline-block"
+      >
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
