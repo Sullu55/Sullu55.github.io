@@ -27,7 +27,6 @@ export const projects: Project[] = [
     repo: 'https://github.com/Sullit0/killa-crm',
     demo: 'https://killa-crm.vercel.app',
     highlight: true,
-    private: true,
   },
   {
     slug: 'insfor-makichay',
@@ -44,7 +43,6 @@ export const projects: Project[] = [
     repo: 'https://github.com/Sullu55/insfor-makichay-bot',
     demo: 'https://559nwjc2-6dt.insforge.site',
     highlight: true,
-    private: true,
   },
   {
     slug: 'sismo-tracker',
