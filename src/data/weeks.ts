@@ -499,4 +499,373 @@ Próximo: Unidad II — Desarrollo Web Backend
     applied:
       'Para el consolidado entrego: Sismo Tracker (Sem 7), CineTracker grupal (Sem 7), Ruleta (Sem 6) y este portafolio. Todos públicos en GitHub bajo @Sullu55.',
   },
+  {
+    n: 9,
+    title: 'Tecnología Web Backend — PHP y JSP',
+    topics: [
+      'Arquitectura de aplicaciones web y server side',
+      'Servidores web: Apache (PHP) y Tomcat (JSP)',
+      'Aplicaciones web con PHP',
+      'Aplicaciones web con JSP',
+    ],
+    summary:
+      'Inicio de la Unidad II (backend). El servidor deja de servir archivos estáticos y empieza a ejecutar lógica: recibe el request, valida, mantiene estado con sesiones y compone la respuesta. Se comparan dos stacks clásicos — PHP sobre Apache y JSP sobre Tomcat.',
+    details: [
+      'En **server-side rendering** el navegador manda un request (formulario, API) y el servidor **ejecuta código** (PHP/Java) antes de devolver el HTML o JSON. A diferencia del frontend, aquí viven la validación real, el acceso a base de datos y los secretos.',
+      '**PHP** se ejecuta sobre **Apache**: el intérprete parsea el `.php`, ejecuta el script (superglobales `$_POST`, `$_SERVER`, `$_SESSION`) y emite la salida. Es de bajo acoplamiento — un archivo = un endpoint.',
+      '**JSP** (JavaServer Pages) corre sobre **Tomcat 10** (Jakarta EE): el `.jsp` se compila a un servlet Java. El descriptor `WEB-INF/web.xml` configura rutas, `session-timeout` y cookies `HttpOnly`.',
+      'La **validación nunca se confía al cliente**: en PHP uso `filter_input()` y devuelvo códigos HTTP correctos (405 si el método no es POST, 400 si la entrada es inválida). El estado entre requests (HTTP es *stateless*) se mantiene con **sesiones**.',
+    ],
+    concepts: [
+      { name: 'Ciclo PHP', desc: 'parse → execute → output. Cada request arranca un intérprete limpio.' },
+      { name: 'JSP → Servlet', desc: 'El .jsp se compila a una clase Java la primera vez que se pide (por eso el primer acceso es lento).' },
+      { name: 'Sesión', desc: 'session_start() en PHP / HttpSession en JSP — estado por usuario sobre HTTP stateless.' },
+      { name: 'Jakarta vs javax', desc: 'Tomcat 10 migró el namespace javax.* → jakarta.* (causa típica de error 500).' },
+    ],
+    codeLang: 'php',
+    codeTitle: 'procesar.php — validación server-side + sesión (Lab 09)',
+    code: `<?php
+require_once __DIR__ . '/config.php';
+session_start();
+
+// 1) Validar método HTTP: solo POST, si no -> 405
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Allow: POST');
+    http_response_code(405);
+    exit('405 Method Not Allowed - Solo se acepta POST');
+}
+
+// 2) Validación de entrada (NO confiar en el cliente)
+$nombre  = filter_input(INPUT_POST, 'nombre',  FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW);
+$correo  = filter_input(INPUT_POST, 'correo',  FILTER_VALIDATE_EMAIL);
+$edad    = filter_input(INPUT_POST, 'edad',    FILTER_VALIDATE_INT, [
+    'options' => ['min_range' => 1, 'max_range' => 120]
+]);
+
+$errores = [];
+if (!$nombre || trim($nombre) === '') { $errores[] = 'El nombre es obligatorio.'; }
+if (!$correo)                         { $errores[] = 'Correo inválido.'; }
+if ($edad === false || $edad === null){ $errores[] = 'Edad fuera de rango (1-120).'; }
+
+// 3) Con errores -> 400 ; sin errores -> guardar en sesión
+if (!empty($errores)) {
+    http_response_code(400);
+} else {
+    $_SESSION['ultimo_envio'] = [
+        'nombre' => $nombre, 'correo' => $correo, 'edad' => $edad,
+        'hora'   => date('Y-m-d H:i:s'),
+    ];
+    $_SESSION['contador'] = ($_SESSION['contador'] ?? 0) + 1;
+}
+// La respuesta se escapa con htmlspecialchars() para evitar XSS.`,
+    applied:
+      'Construí el mismo formulario en PHP (Apache) y JSP (Tomcat 10) para comparar ambos stacks: validación con filter_input(), respuestas HTTP correctas (200/400/405), escape anti-XSS con htmlspecialchars() y sesiones con cookie HttpOnly. Documenté las diferencias en docs/COMPARACION_PHP_JSP.md. El bug más instructivo: Tomcat 10 devolvía 500 porque el web.xml usaba el namespace javax.* en lugar de jakarta.*.',
+  },
+  {
+    n: 10,
+    title: 'Lenguaje Python — sintaxis y POO',
+    topics: [
+      'Sintaxis, indentación, variables, cadenas y números',
+      'Colecciones: listas, tuplas, diccionarios',
+      'Estructuras de control y funciones (retorno, imperativas)',
+      'POO: clases, herencia múltiple, polimorfismo, excepciones, módulos',
+    ],
+    summary:
+      'Python como lenguaje del backend moderno (paso previo a Django). La indentación es sintaxis, el tipado es dinámico pero fuerte, y la POO —clases, herencia, polimorfismo, excepciones— es la base sobre la que Django construye sus modelos y vistas.',
+    details: [
+      'Python usa **indentación** (no llaves) para delimitar bloques. Es **dinámicamente tipado** pero **fuertemente tipado**: no mezcla `str + int` en silencio como JavaScript. Las anotaciones de tipo (`def f(x: int) -> str`) son opcionales y no se comprueban en runtime.',
+      'Las **colecciones** core: `list` (mutable, ordenada), `tuple` (inmutable), `dict` (clave→valor, ordenada desde 3.7) y `set` (únicos). Las *comprehensions* (`[x*2 for x in nums if x > 0]`) reemplazan muchos `for` explícitos.',
+      'La **POO**: `class` define atributos e instancias; `__init__` es el constructor; `self` es la instancia. Python soporta **herencia múltiple** (resuelta por MRO) y **polimorfismo** vía *duck typing* — si un objeto tiene el método, sirve, sin importar su clase.',
+      'Las **excepciones** (`try/except/finally`, `raise`) modelan los errores; los **módulos** (`import`) y paquetes organizan el código. Este es exactamente el modelo mental que Django reutiliza: un modelo es una clase, una vista es una función o clase.',
+    ],
+    concepts: [
+      { name: 'Indentación', desc: 'Los bloques se definen por sangría (4 espacios), no por llaves. Es sintaxis, no estilo.' },
+      { name: 'Duck typing', desc: '"Si camina como pato y suena como pato, es un pato." Polimorfismo sin interfaces explícitas.' },
+      { name: 'self', desc: 'Primer parámetro de todo método de instancia; referencia al objeto actual (como this).' },
+      { name: 'Comprehensions', desc: '[expr for x in iter if cond] — construir listas/dicts/sets de forma declarativa.' },
+    ],
+    codeLang: 'python',
+    codeTitle: 'POO en Python: clases, herencia y polimorfismo',
+    code: `class Producto:
+    """Clase base. __init__ es el constructor; self es la instancia."""
+    def __init__(self, nombre, precio):
+        self.nombre = nombre
+        self.precio = precio
+
+    def etiqueta(self):
+        return f"{self.nombre}: S/ {self.precio:.2f}"
+
+
+class Bebida(Producto):          # herencia
+    def __init__(self, nombre, precio, ml):
+        super().__init__(nombre, precio)
+        self.ml = ml
+
+    def etiqueta(self):          # polimorfismo (sobrescribe el método)
+        return f"{self.nombre} ({self.ml}ml): S/ {self.precio:.2f}"
+
+
+carta = [
+    Producto("Alfajor", 3.50),
+    Bebida("Capuchino", 8.00, 240),
+]
+
+# Duck typing: no importa la clase, todos responden a .etiqueta()
+for p in carta:
+    print(p.etiqueta())
+
+# Comprehension + excepciones
+try:
+    caros = [p.nombre for p in carta if p.precio > 5]
+    print("Caros:", caros)
+except AttributeError as e:
+    print("Error de atributo:", e)`,
+    applied:
+      'Python es la base de todo el backend que viene después: en las semanas 11-13 lo uso vía Django (modelos = clases, vistas = funciones/clases, managers = métodos). El modelo mental de POO —herencia y polimorfismo— es justo lo que aplico al extender ModelForm, ListView y ModelViewSet.',
+  },
+  {
+    n: 11,
+    title: 'Django — patrón MTV, vistas y plantillas',
+    topics: [
+      'Django MVC/MTV, instalación y gestión de proyectos',
+      'Enrutamiento: urls.py, include() y rutas con name',
+      'Vistas basadas en funciones (FBV) y en clases (CBV)',
+      'Plantillas (herencia, tags, filtros) y modelo de datos (ORM)',
+    ],
+    summary:
+      'Django introduce el patrón **MTV** (Model-Template-View), su variante del MVC. El ORM mapea clases Python a tablas SQL, las vistas (función o clase) resuelven el request→response y las plantillas heredan de una base con bloques, tags y filtros.',
+    details: [
+      'En **MTV** el *Model* es la clase que define los datos (Django genera el SQL vía **migraciones**), la *View* contiene la lógica (recibe `request`, devuelve `response`) y el *Template* es el HTML con lógica de presentación. El "Controller" es el propio framework (el enrutador).',
+      'El **enrutamiento** se arma con `urls.py` e `include()`: cada app tiene sus rutas y el proyecto las agrupa. Nombrar las rutas (`name="catalogo:home"`) permite **reversibilidad** — generar URLs sin hardcodearlas.',
+      'Las **FBV** (vistas función) son explícitas y directas; las **CBV** como `ListView` traen comportamiento reutilizable (paginación, `get_context_data`). Uso `home` como FBV y `ProductoListView` como CBV en el mismo proyecto para comparar.',
+      'Las **plantillas** usan herencia (`{% extends "base.html" %}`), bloques, tags (`{% for %}`, `{% if %}`, `{% regroup %}`) y filtros (`|title`, `|date`, `|pluralize`). El **ORM** (`Producto.objects.filter(...)`) reemplaza el SQL manual y previene inyección.',
+    ],
+    concepts: [
+      { name: 'MTV', desc: 'Model (datos) + Template (HTML) + View (lógica). El "Controller" es Django mismo.' },
+      { name: 'ORM', desc: 'Producto.objects.filter(disponible=True) → SQL seguro y portable, sin escribir queries a mano.' },
+      { name: 'Migraciones', desc: 'makemigrations + migrate: versionan los cambios del modelo y los aplican a la BD.' },
+      { name: 'FBV vs CBV', desc: 'Función (explícita, simple) vs Clase (reutilizable: ListView, DetailView, get_context_data).' },
+    ],
+    codeLang: 'python',
+    codeTitle: 'Vistas FBV + CBV con el ORM (Cafetería UNCP)',
+    code: `from django.shortcuts import render
+from django.views.generic import ListView
+from .models import Producto
+
+
+# --- Vista Basada en Función (FBV) ---
+def home(request):
+    """Ciclo request -> response con render()."""
+    contexto = {
+        'titulo': 'cafetería UNCP',
+        'total_productos': Producto.objects.count(),
+        'disponibles': Producto.objects.filter(disponible=True).count(),
+        'destacados': Producto.objects.filter(destacado=True, disponible=True),
+    }
+    return render(request, 'catalogo/home.html', contexto)
+
+
+# --- Vista Basada en Clase (CBV) ---
+class ProductoListView(ListView):
+    model = Producto
+    template_name = 'catalogo/catalogo.html'
+    context_object_name = 'productos'
+    # Ordenado por categoría para agrupar con {% regroup %} en la plantilla
+    queryset = Producto.objects.order_by('categoria', '-destacado', 'nombre')
+
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto['disponibles'] = Producto.objects.filter(disponible=True).count()
+        return contexto`,
+    applied:
+      'Construí "Cafetería UNCP": un catálogo con modelo Producto (nombre, precio, categoría, disponible, destacado, calificación), portada FBV con estadísticas y carta CBV con productos agrupados por categoría vía {% regroup %}, insignias Disponible/Agotado/Favorito y estrellas de calificación. Datos poblados por un management command con el ORM (poblar_datos).',
+    myProject: { name: 'Cafetería UNCP (Django MTV)', href: 'https://github.com/Sullit0/semana11-cafeteria' },
+  },
+  {
+    n: 12,
+    title: 'Django — formularios, admin, middleware y seguridad',
+    topics: [
+      'Formularios: ModelForm, validación en 3 niveles y sanitización',
+      'Django Admin: list_display, filtros, acciones, campos calculados',
+      'Middleware custom, sesiones y cabeceras de seguridad',
+      'Autenticación y autorización por roles/permisos + CSRF',
+    ],
+    summary:
+      'El ciclo completo de gestión segura de datos en Django: formularios que validan en varios niveles, un panel de administración personalizado, middleware propio que audita cada request, y autorización basada en grupos y permisos con protección CSRF.',
+    details: [
+      'Un **ModelForm** deriva sus campos del modelo y valida en **3 niveles**: por campo (`clean_<campo>`), cruzada entre campos (`clean()` — ej. "solo becado si promedio ≥ 14") y a nivel de modelo. La entrada se **sanitiza** (`strip()` + `escape()`) para mitigar XSS. Nunca se confía en el frontend: todo pasa por `is_valid()` antes de `save()`.',
+      'El **Django Admin** se personaliza con `list_display`, `list_filter`, `search_fields`, `readonly_fields`, `actions` y `@admin.display` — un CRUD administrativo completo casi gratis.',
+      'Un **middleware custom** es una clase con `__init__` (una vez al arrancar) y `__call__` (en cada request): ejecuta código antes de la vista, llama a `get_response(request)`, y ejecuta código después. Lo uso para auditar método, ruta, status, usuario y duración de cada petición.',
+      'La **autorización** usa grupos y permisos de Django: `@login_required` protege vistas función y `PermissionRequiredMixin` protege CBV. **CSRF** (`{% csrf_token %}` + cookie `HttpOnly`/`SameSite=Lax`), sesiones con expiración (30 min) y cabeceras (`X-Frame-Options: DENY`, `nosniff`) cierran el modelo de seguridad.',
+    ],
+    concepts: [
+      { name: 'clean_<campo> / clean()', desc: 'Validación por campo y cruzada. add_error() asocia un error no fatal a un campo.' },
+      { name: 'CSRF', desc: 'Token por sesión que evita que un tercero envíe formularios en tu nombre. Obligatorio en POST.' },
+      { name: 'Middleware', desc: '__init__ (arranque) + __call__ (cada request). Envuelve la vista: antes → get_response → después.' },
+      { name: 'Permisos', desc: 'Grupos + permisos (view_estudiante). @login_required y PermissionRequiredMixin protegen vistas.' },
+    ],
+    codeLang: 'python',
+    codeTitle: 'Validación en 3 niveles con ModelForm (Sistema de Gestión)',
+    code: `import re
+from django import forms
+from django.utils.html import escape
+from .models import Estudiante
+
+
+def sanitize_input(valor):
+    """Recorta espacios y escapa HTML para mitigar XSS (no reemplaza la validación)."""
+    return escape(valor.strip()) if valor else valor
+
+
+class EstudianteForm(forms.ModelForm):
+    class Meta:
+        model = Estudiante
+        fields = ['codigo', 'nombres', 'apellidos', 'correo',
+                  'telefono', 'promedio', 'becado', 'activo']
+
+    # Nivel 1: validación por campo
+    def clean_correo(self):
+        correo = self.cleaned_data.get('correo', '').strip().lower()
+        if correo and not correo.endswith('@uncp.edu.pe'):
+            raise forms.ValidationError('El correo debe ser del dominio @uncp.edu.pe')
+        return correo
+
+    def clean_telefono(self):
+        tel = self.cleaned_data.get('telefono', '').strip()
+        if tel and not re.fullmatch(r'9\\d{8}', tel):
+            raise forms.ValidationError('El teléfono debe tener 9 dígitos y empezar con 9.')
+        return tel
+
+    # Nivel 2: validación cruzada entre campos
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get('becado') and (cleaned.get('promedio') or 0) < 14:
+            self.add_error('becado', 'Solo pueden ser becados con promedio >= 14.')
+        return cleaned`,
+    applied:
+      'Sistema de gestión de estudiantes con el ciclo de seguridad completo: ModelForm con validación en 3 niveles + sanitización, Django Admin personalizado, un middleware AuditLogMiddleware que registra [AUDIT] método/ruta/status/usuario/duración y añade la cabecera X-Tiempo-Respuesta, y autorización por grupos (rol Coordinador con permiso view_estudiante). Verificado con python manage.py check --deploy.',
+    myProject: { name: 'Gestión Django (forms + auth)', href: 'https://github.com/Sullit0/practica-semana12-django' },
+  },
+  {
+    n: 13,
+    title: 'Diseño de APIs RESTful con Django REST Framework',
+    topics: [
+      'REST, HATEOAS y serialización de modelos',
+      'ViewSets + Routers (CRUD automático) y acciones custom',
+      'Filtrado, búsqueda, paginación y throttling',
+      'CORS, CSRF y documentación OpenAPI (Swagger/ReDoc)',
+    ],
+    summary:
+      'Diseño de una API REST profesional con Django REST Framework. Los serializers hipervinculados implementan HATEOAS, los ViewSets + Router generan el CRUD automáticamente, y las políticas transversales (filtrado, paginación, throttling, permisos) viven en la configuración, no en las vistas.',
+    details: [
+      '**REST** modela recursos con URLs y verbos HTTP (`GET` listar/leer, `POST` crear, `PUT/PATCH` actualizar, `DELETE` borrar). **HATEOAS** añade hipervínculos en cada respuesta (campo `url` + enlaces a recursos relacionados) para navegar la API sin documentación externa — lo logro con `HyperlinkedModelSerializer`.',
+      'La **serialización** convierte modelos ↔ JSON y **valida ahí** (regla de laboratorio: `validate_<campo>()` y `validate()` en el serializer, no en la vista). Se exponen solo los campos listados explícitamente — nunca campos sensibles.',
+      'Los **ViewSets** (`ModelViewSet`) + un **Router** (`DefaultRouter`) generan todas las rutas del CRUD automáticamente. Las vistas quedan "delgadas": añado endpoints extra con `@action` (ej. `/productos/destacados/`, `/productos/{id}/agotar/`).',
+      'Las políticas transversales van en `settings`: **filtrado/búsqueda/ordenamiento** (`DjangoFilterBackend`, `SearchFilter`, `OrderingFilter`), **paginación** con metadatos, **throttling** (30/min anónimo, 120/min autenticado), **permisos** globales (`IsAuthenticatedOrReadOnly`), **CORS** con orígenes explícitos (no `*`) y docs **OpenAPI 3.0** automáticas (Swagger/ReDoc).',
+    ],
+    concepts: [
+      { name: 'HATEOAS', desc: 'Cada recurso trae su url y enlaces a los relacionados — la API se autodescribe.' },
+      { name: 'ViewSet + Router', desc: 'ModelViewSet + DefaultRouter generan list/create/retrieve/update/destroy sin escribir rutas.' },
+      { name: 'Throttling', desc: 'Límite de tasa por cliente (30/min anónimo, 120/min auth) contra abuso y scraping.' },
+      { name: 'CORS', desc: 'Orígenes cross-domain permitidos, explícitos (nunca *). Distinto de CSRF (formularios de sesión).' },
+    ],
+    codeLang: 'python',
+    codeTitle: 'Serializer hipervinculado + ViewSet con @action (API MercadoAndino)',
+    code: `from rest_framework import serializers, viewsets, filters
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import Categoria, Producto
+
+
+# --- Serialización con HATEOAS (la validación vive AQUÍ) ---
+class CategoriaSerializer(serializers.HyperlinkedModelSerializer):
+    total_productos = serializers.SerializerMethodField()  # campo derivado read-only
+
+    class Meta:
+        model = Categoria
+        fields = ['id', 'url', 'nombre', 'slug', 'activa', 'total_productos']
+        read_only_fields = ['slug']
+
+    def get_total_productos(self, obj) -> int:
+        return obj.productos.count()
+
+    def validate_nombre(self, value):
+        if value.strip().isdigit():
+            raise serializers.ValidationError('El nombre no puede ser solo números.')
+        return value.strip()
+
+
+# --- ViewSet: el Router genera list/create/retrieve/update/destroy ---
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['nombre', 'descripcion']
+
+    @action(detail=True, methods=['get'])
+    def productos(self, request, pk=None):
+        """GET /api/categorias/{id}/productos/ -> productos de la categoría (paginado)."""
+        qs = self.get_object().productos.all().order_by('-created')
+        page = self.paginate_queryset(qs)
+        ser = ProductoSerializer(page or qs, many=True, context={'request': request})
+        return self.get_paginated_response(ser.data)`,
+    applied:
+      'Construí "API MercadoAndino": una API REST de catálogo andino (categorías + productos) con Django REST Framework. Serializers hipervinculados (HATEOAS), ViewSets + DefaultRouter para el CRUD, acciones custom (destacados, agotar), filtrado/búsqueda/paginación, throttling (30/120 por min), CORS con orígenes explícitos y documentación OpenAPI 3.0 con Swagger UI y ReDoc. Incluye un frontend demo que consume la API vía fetch() y una colección api.http para REST Client.',
+    myProject: { name: 'API MercadoAndino (DRF)', href: 'https://github.com/Sullit0/desarrollo-web-semana-13' },
+  },
+  {
+    n: 14,
+    title: 'Microservicios en Django — Docker y Kubernetes',
+    topics: [
+      'Arquitectura de microservicios vs monolito',
+      'Primer microservicio con Django y comunicación entre servicios',
+      'Bases de datos por servicio y contenedores (Docker)',
+      'Despliegue, monitoreo y escalado con Kubernetes',
+    ],
+    summary:
+      'Cierre técnico de la Unidad II: descomponer el backend en servicios pequeños e independientes, cada uno con su base de datos, empaquetados en contenedores Docker y orquestados con Kubernetes para escalarlos y monitorearlos por separado.',
+    details: [
+      'Un **monolito** es una sola aplicación desplegable; los **microservicios** la parten en servicios pequeños que hacen una cosa y se comunican por red (REST/HTTP o mensajería). Cada servicio se despliega, escala y falla de forma independiente — a cambio de más complejidad operativa.',
+      'La regla **database-per-service**: cada microservicio es dueño de su propia base de datos y nadie más la toca directamente. Se sincronizan por API o eventos, no compartiendo tablas. Esto evita el acoplamiento oculto del monolito.',
+      '**Docker** empaqueta cada servicio con sus dependencias en una imagen reproducible (`Dockerfile` + `docker-compose` para desarrollo local). "Funciona en mi máquina" deja de ser excusa: el contenedor lleva su entorno consigo.',
+      '**Kubernetes** orquesta los contenedores en producción: los reinicia si caen (self-healing), los escala según carga (réplicas), hace balanceo de carga y despliegues sin downtime. Encima se añaden **monitoreo** y **escalado** para operar el sistema.',
+    ],
+    concepts: [
+      { name: 'Microservicio', desc: 'Servicio pequeño, autónomo, con un único propósito y su propia BD, comunicado por red.' },
+      { name: 'Docker', desc: 'Imagen = app + dependencias + entorno. Contenedor = instancia en ejecución, reproducible.' },
+      { name: 'Kubernetes', desc: 'Orquestador: self-healing, réplicas, balanceo y despliegues sin downtime.' },
+      { name: 'DB per service', desc: 'Cada servicio dueño de su BD; se integran por API/eventos, no compartiendo tablas.' },
+    ],
+    codeLang: 'yaml',
+    codeTitle: 'Contenerizar un microservicio Django con Docker Compose',
+    code: `# docker-compose.yml — servicio de catálogo + su propia base de datos
+services:
+  catalogo:
+    build: ./catalogo            # Dockerfile del microservicio Django
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    environment:
+      - DATABASE_URL=postgres://app:secret@catalogo-db:5432/catalogo
+    ports:
+      - "8001:8000"
+    depends_on:
+      - catalogo-db
+
+  # Base de datos PROPIA de este servicio (database-per-service)
+  catalogo-db:
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=catalogo
+    volumes:
+      - catalogo_data:/var/lib/postgresql/data
+
+volumes:
+  catalogo_data:
+
+# En producción, un Deployment de Kubernetes corre N réplicas de "catalogo"
+# detrás de un Service que balancea la carga y las reinicia si caen.`,
+    applied:
+      'Semana en curso (voy en la ~15). El objetivo es descomponer el backend de las semanas anteriores en microservicios Django contenerizados con Docker, cada uno con su BD, y orquestarlos con Kubernetes. Actualizaré esta sección con mi microservicio y su repositorio cuando lo termine.',
+  },
 ];

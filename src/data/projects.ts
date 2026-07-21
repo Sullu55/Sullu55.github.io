@@ -45,6 +45,51 @@ export const projects: Project[] = [
     highlight: true,
   },
   {
+    slug: 'mercadoandino-api',
+    title: 'API MercadoAndino',
+    description:
+      'API RESTful de catálogo de productos andinos con Django REST Framework: HATEOAS, ViewSets, filtrado, throttling y docs OpenAPI.',
+    week: 'Semana 13',
+    stack: ['Django 5', 'DRF', 'Python 3.12', 'SQLite', 'drf-spectacular'],
+    features: [
+      'Serializers hipervinculados (HATEOAS) + validación en el serializer',
+      'ViewSets + Router (CRUD auto) y acciones @action custom',
+      'Filtrado, búsqueda, paginación y throttling (30/120 por min)',
+      'CORS explícito + documentación OpenAPI 3.0 (Swagger/ReDoc)',
+    ],
+    repo: 'https://github.com/Sullit0/desarrollo-web-semana-13',
+  },
+  {
+    slug: 'gestion-django',
+    title: 'Gestión de Estudiantes',
+    description:
+      'Sistema backend en Django con el ciclo completo de seguridad: formularios validados, admin personalizado, middleware de auditoría y autorización por roles.',
+    week: 'Semana 12',
+    stack: ['Django 5', 'Python 3.12', 'SQLite'],
+    features: [
+      'ModelForm con validación en 3 niveles + sanitización anti-XSS',
+      'Django Admin personalizado (filtros, acciones, campos calculados)',
+      'Middleware custom de auditoría (X-Tiempo-Respuesta)',
+      'Auth + autorización por grupos/permisos + CSRF',
+    ],
+    repo: 'https://github.com/Sullit0/practica-semana12-django',
+  },
+  {
+    slug: 'cafeteria-uncp',
+    title: 'Cafetería UNCP',
+    description:
+      'Catálogo de cafetería con Django (patrón MTV): vistas FBV y CBV, plantillas con herencia y modelo Producto sobre el ORM.',
+    week: 'Semana 11',
+    stack: ['Django 5', 'Python 3.12', 'SQLite', 'ORM'],
+    features: [
+      'Patrón MTV: modelo Producto, plantillas con herencia y vistas',
+      'FBV (home con estadísticas) + CBV (ListView del catálogo)',
+      'Productos agrupados por categoría con {% regroup %}',
+      'Datos poblados vía management command con el ORM',
+    ],
+    repo: 'https://github.com/Sullit0/semana11-cafeteria',
+  },
+  {
     slug: 'sismo-tracker',
     title: 'Sismo Tracker Perú',
     description:
