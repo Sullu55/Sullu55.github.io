@@ -560,6 +560,7 @@ if (!empty($errores)) {
 // La respuesta se escapa con htmlspecialchars() para evitar XSS.`,
     applied:
       'Construí el mismo formulario en PHP (Apache) y JSP (Tomcat 10) para comparar ambos stacks: validación con filter_input(), respuestas HTTP correctas (200/400/405), escape anti-XSS con htmlspecialchars() y sesiones con cookie HttpOnly. Documenté las diferencias en docs/COMPARACION_PHP_JSP.md. El bug más instructivo: Tomcat 10 devolvía 500 porque el web.xml usaba el namespace javax.* en lugar de jakarta.*.',
+    myProject: { name: 'Lab PHP + JSP (S9)', href: 'https://github.com/Sullit0/desarrollo-web-semana-9' },
   },
   {
     n: 10,
